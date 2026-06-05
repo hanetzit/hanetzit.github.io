@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanetz IT Innovations PVT LTD - Cutting-Edge Software Solutions</title>
+    <meta name="description" content="Hanetz IT Innovations provides cutting-edge software solutions, web development, mobile apps, and AI-powered services.">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: #000;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #00d4ff;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00d4ff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section with 3D Background */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        #three-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #00d4ff;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 3D Product Viewer Section */
+        .product-viewer {
+            padding: 100px 0;
+            background: #000;
+            color: white;
+        }
+
+        .viewer-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .viewer-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        .viewer-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .product-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover,
+        .control-btn.active {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        #product-canvas {
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+            color: white;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item i {
+            color: #00d4ff;
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #00d4ff;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            z-index: 2000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: rgba(0, 0, 0, 0.95);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .viewer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 212, 255, 0.3);
+            border-top: 3px solid #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #ff4444;
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Hanetz IT</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <canvas id="three-canvas"></canvas>
+        <div class="hero-content">
+            <h1>Hanetz IT Innovations</h1>
+            <p>Transforming ideas into cutting-edge software solutions with AI-powered innovation</p>
+            <a href="#contact" class="cta-button">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Web Development</h3>
+                    <p>Modern, responsive websites and web applications built with cutting-edge technologies.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Apps</h3>
+                    <p>Native and cross-platform mobile applications for iOS and Android platforms.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Solutions</h3>
+                    <p>Intelligent automation and machine learning solutions to optimize your business processes.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3>Cloud Services</h3>
+                    <p>Scalable cloud infrastructure and deployment solutions for modern applications.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Cybersecurity</h3>
+                    <p>Comprehensive security solutions to protect your digital assets and data.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Data Analytics</h3>
+                    <p>Advanced analytics and business intelligence solutions for data-driven decisions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D Product Viewer Section -->
+    <section class="product-viewer" id="products">
+        <div class="container">
+            <div class="viewer-container">
+                <div class="viewer-content">
+                    <h2>Interactive 3D Solutions</h2>
+                    <p>Experience our innovative 3D technologies and interactive solutions. Explore different models and see how our cutting-edge development approaches can transform your business.</p>
+                    <div class="product-controls">
+                        <button class="control-btn active" data-model="cube">Cube</button>
+                        <button class="control-btn" data-model="sphere">Sphere</button>
+                        <button class="control-btn" data-model="torus">Torus</button>
+                        <button class="control-btn" data-model="cone">Cone</button>
+                    </div>
+                </div>
+                <div>
+                    <canvas id="product-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Innovation Street, Tech City, TC 12345</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@hanetzit.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required>
+                        <div class="error-message" id="nameError" style="display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="emailError" style="display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <input type="text" id="subject" name="subject" required>
+                        <div class="error-message" id="subjectError" style="display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <div class="error-message" id="messageError" style="display: none;"></div>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Hanetz IT Innovations PVT LTD. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let heroScene, heroCamera, heroRenderer;
+        let productScene, productCamera, productRenderer;
+        let heroMesh, productMesh;
+        let isLoading = true;
+
+        // Initialize GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initialize the website
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeWebsite();
+        });
+
+        async function initializeWebsite() {
+            try {
+                // Initialize 3D scenes
+                await init3DScenes();
+
+                // Initialize animations
+                initializeAnimations();
+
+                // Initialize form handling
+                initializeFormHandling();
+
+                // Initialize navigation
+                initializeNavigation();
+
+                // Hide loading screen
+                hideLoadingScreen();
+
+            } catch (error) {
+                console.error('Error initializing website:', error);
+                hideLoadingScreen();
+            }
+        }
+
+        // Initialize 3D scenes
+        async function init3DScenes() {
+            try {
+                initHero3D();
+                initProduct3D();
+                animate();
+            } catch (error) {
+                console.error('Error initializing 3D scenes:', error);
+                throw error;
+            }
+        }
+
+        // Initialize hero 3D background
+        function initHero3D() {
+            const canvas = document.getElementById('three-canvas');
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            // Scene setup
+            heroScene = new THREE.Scene();
+            heroCamera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            heroRenderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            heroRenderer.setSize(width, height);
+            heroRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create animated background geometry
+            const geometry = new THREE.SphereGeometry(1, 32, 32);
+            const material = new THREE.MeshBasicMaterial({
+                color: 0x00d4ff,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.3
+            });
+
+            // Create multiple spheres
+            const spheres = [];
+            for (let i = 0; i < 20; i++) {
+                const sphere = new THREE.Mesh(geometry, material.clone());
+                sphere.position.set(
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20
+                );
+                sphere.scale.setScalar(Math.random() * 0.5 + 0.1);
+                heroScene.add(sphere);
+                spheres.push(sphere);
+            }
+
+            heroMesh = spheres;
+            heroCamera.position.z = 10;
+
+            // Add particles
+            const particleGeometry = new THREE.BufferGeometry();
+            const particleCount = 1000;
+            const positions = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 50;
+            }
+
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particleMaterial = new THREE.PointsMaterial({
+                color: 0x00d4ff,
+                size: 0.1,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            const particles = new THREE.Points(particleGeometry, particleMaterial);
+            heroScene.add(particles);
+        }
+
+        // Initialize product 3D viewer
+        function initProduct3D() {
+            const canvas = document.getElementById('product-canvas');
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+
+            productScene = new THREE.Scene();
+            productCamera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            productRenderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            productRenderer.setSize(width, height);
+            productRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            productScene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0x00d4ff, 1);
+            directionalLight.position.set(5, 5, 5);
+            productScene.add(directionalLight);
+
+            // Initial model (cube)
+            createProductModel('cube');
+            productCamera.position.z = 5;
+        }
+
+        // Create different 3D models
+        function createProductModel(type) {
+            // Remove existing mesh
+            if (productMesh) {
+                productScene.remove(productMesh);
+            }
+
+            let geometry;
+            switch (type) {
+                case 'sphere':
+                    geometry = new THREE.SphereGeometry(1.5, 32, 32);
+                    break;
+                case 'torus':
+                    geometry = new THREE.TorusGeometry(1, 0.4, 16, 100);
+                    break;
+                case 'cone':
+                    geometry = new THREE.ConeGeometry(1, 2, 32);
+                    break;
+                default:
+                    geometry = new THREE.BoxGeometry(2, 2, 2);
+            }
+
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x00d4ff,
+                shininess: 100,
+                transparent: true,
+                opacity: 0.9
+            });
+
+            productMesh = new THREE.Mesh(geometry, material);
+            productScene.add(productMesh);
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Animate hero spheres
+            if (heroMesh && Array.isArray(heroMesh)) {
+                heroMesh.forEach((sphere, index) => {
+                    sphere.rotation.x += 0.01;
+                    sphere.rotation.y += 0.01;
+                    sphere.position.y += Math.sin(Date.now() * 0.001 + index) * 0.001;
+                });
+            }
+
+            // Animate product mesh
+            if (productMesh) {
+                productMesh.rotation.x += 0.01;
+                productMesh.rotation.y += 0.02;
+            }
+
+            // Render scenes
+            if (heroRenderer && heroScene && heroCamera) {
+                heroRenderer.render(heroScene, heroCamera);
+            }
+            if (productRenderer && productScene && productCamera) {
+                productRenderer.render(productScene, productCamera);
+            }
+        }
+
+        // Initialize animations
+        function initializeAnimations() {
+            // Hero content animation
+            gsap.to('.hero h1', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.5,
+                ease: 'power3.out'
+            });
+
+            gsap.to('.hero p', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.7,
+                ease: 'power3.out'
+            });
+
+            gsap.to('.cta-button', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.9,
+                ease: 'power3.out'
+            });
+
+            // Service cards animation
+            gsap.utils.toArray('.service-card').forEach((card, index) => {
+                gsap.fromTo(card,
+                    { opacity: 0, y: 50 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        delay: index * 0.1,
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 80%',
+                            end: 'bottom 20%',
+                            toggleActions: 'play none none reverse'
+                        }
+                    }
+                );
+            });
+
+            // Product viewer animation
+            gsap.fromTo('.viewer-content',
+                { opacity: 0, x: -50 },
+                {
+                    opacity: 1,
+                    x: 0,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: '.product-viewer',
+                        start: 'top 70%',
+                        end: 'bottom 30%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        }
+
+        // Initialize form handling
+        function initializeFormHandling() {
+            const form = document.getElementById('contactForm');
+            const controlBtns = document.querySelectorAll('.control-btn');
+
+            // Form validation and submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                if (validateForm()) {
+                    simulateFormSubmission();
+                }
+            });
+
+            // Real-time validation
+            const inputs = form.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('blur', () => validateField(input));
+                input.addEventListener('input', () => clearError(input));
+            });
+
+            // Product model controls
+            controlBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    controlBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    createProductModel(this.dataset.model);
+                });
+            });
+        }
+
+        // Form validation
+        function validateForm() {
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const subject = document.getElementById('subject');
+            const message = document.getElementById('message');
+            let isValid = true;
+
+            if (!validateField(name)) isValid = false;
+            if (!validateField(email)) isValid = false;
+            if (!validateField(subject)) isValid = false;
+            if (!validateField(message)) isValid = false;
+
+            return isValid;
+        }
+
+        function validateField(field) {
+            const value = field.value.trim();
+            const fieldName = field.name;
+            let isValid = true;
+            let errorMessage = '';
+
+            // Clear previous errors
+            clearError(field);
+
+            if (!value) {
+                errorMessage = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
+                isValid = false;
+            } else if (fieldName === 'email') {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    errorMessage = 'Please enter a valid email address';
+                    isValid = false;
+                }
+            } else if (fieldName === 'name' && value.length < 2) {
+                errorMessage = 'Name must be at least 2 characters long';
+                isValid = false;
+            } else if (fieldName === 'message' && value.length < 10) {
+                errorMessage = 'Message must be at least 10 characters long';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                showError(field, errorMessage);
+            }
+
+            return isValid;
+        }
+
+        function showError(field, message) {
+            const errorElement = document.getElementById(field.name + 'Error');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                field.style.borderColor = '#ff4444';
+            }
+        }
+
+        function clearError(field) {
+            const errorElement = document.getElementById(field.name + 'Error');
+            if (errorElement) {
+                errorElement.style.display = 'none';
+                field.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            }
+        }
+
+        // Simulate form submission
+        function simulateFormSubmission() {
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+
+                // Reset form
+                document.getElementById('contactForm').reset();
+
+                // Show success notification
+                showNotification('Message sent successfully!', 'success');
+            }, 2000);
+        }
+
+        // Initialize navigation
+        function initializeNavigation() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            // Mobile menu toggle
+            hamburger.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+
+            // Smooth scrolling for navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+
+                    // Close mobile menu
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Navbar background on scroll
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+                } else {
+                    navbar.style.background = 'rgba(0, 0, 0, 0.9)';
+                }
+            });
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Hide loading screen
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 1500); // Show loading for at least 1.5 seconds
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (heroRenderer && heroCamera) {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+
+                heroCamera.aspect = width / height;
+                heroCamera.updateProjectionMatrix();
+                heroRenderer.setSize(width, height);
+            }
+
+            if (productRenderer && productCamera) {
+                const canvas = document.getElementById('product-canvas');
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
+
+                productCamera.aspect = width / height;
+                productCamera.updateProjectionMatrix();
+                productRenderer.setSize(width, height);
+            }
+        });
+
+        // Performance optimization
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Pause animations when tab is not visible
+                if (heroRenderer) heroRenderer.setAnimationLoop(null);
+                if (productRenderer) productRenderer.setAnimationLoop(null);
+            } else {
+                // Resume animations when tab becomes visible
+                animate();
+            }
+        });
+
+        // Error handling for 3D initialization
+        window.addEventListener('error', function(e) {
+            console.error('Website error:', e.error);
+            hideLoadingScreen();
+            showNotification('Some features may not work properly due to browser compatibility.', 'warning');
+        });
+
+        // Additional smooth scroll behavior for CTA button
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const contactSection = document.querySelector('#contact');
+                    if (contactSection) {
+                        contactSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
